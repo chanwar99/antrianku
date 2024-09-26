@@ -9,6 +9,7 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
+    public $rememberMe = true;
 
     private $_user;
 
@@ -16,6 +17,7 @@ class LoginForm extends Model
     {
         return [
             [['username', 'password'], 'required'],
+            ['rememberMe', 'boolean'],
             ['password', 'validatePassword'],
         ];
     }

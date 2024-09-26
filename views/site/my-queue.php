@@ -31,11 +31,32 @@ $this->title = 'My Queue';
                 <tbody>
                     <?php foreach ($queues as $queue): ?>
                         <tr>
-                            <td><?= Html::encode($queue->queue_number) ?></td>
+                            <td>
+                                <span class="badge bg-primary">
+                                    <?= Html::encode($queue->queue_number) ?>
+                                </span>
+                            </td>
                             <td><?= Html::encode($queue->service->name) ?></td>
                             <td><?= Html::encode($queue->merchant->name) ?></td>
-                            <td><?= Html::encode($queue->queue_status) ?></td>
-                            <td><?= Html::encode(date('Y-m-d H:i:s', strtotime($queue->created_at))) ?></td>
+                            <td>
+                                <?php
+                                switch ($queue->queue_status) {
+                                    case 'waiting':
+                                        $badgeClass = 'bg-warning';
+                                        break;
+                                    case 'processing':
+                                        $badgeClass = 'bg-info';
+                                        break;
+                                    case 'completed':
+                                        $badgeClass = 'bg-success';
+                                        break;
+                                }
+                                ?>
+                                <span class="badge <?= $badgeClass ?>">
+                                    <?= Html::encode(ucfirst($queue->queue_status)) ?>
+                                </span>
+                            </td>
+                            <td><?= Yii::$app->formatter->asDatetime($queue->created_at, 'php:d-m-Y H:i') ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
